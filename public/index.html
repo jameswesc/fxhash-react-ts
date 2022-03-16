@@ -19,7 +19,10 @@
                     0
                 )
             let fxhashTrunc = fxhash.slice(2)
-            let regex = new RegExp('.{' + ((fxhash.length / 4) | 0) + '}', 'g')
+            let regex = new RegExp(
+                '.{' + ((fxhashTrunc.length / 4) | 0) + '}',
+                'g'
+            )
             let hashes = fxhashTrunc.match(regex).map((h) => b58dec(h))
             let sfc32 = (a, b, c, d) => {
                 return () => {
@@ -37,6 +40,11 @@
                 }
             }
             var fxrand = sfc32(...hashes)
+            // true if preview mode active, false otherwise
+            // you can append preview=1 to the URL to simulate preview active
+            var isFxpreview =
+                new URLSearchParams(window.location.search).get('preview') ===
+                '1'
             // call this method to trigger the preview
             function fxpreview() {
                 console.log('fxhash: TRIGGER PREVIEW')
